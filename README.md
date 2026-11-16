@@ -52,3 +52,10 @@ your own rate limiting downstream.
 - `sampler.counts() -> dict[str, int]` — a copy of all counters.
 - `sampler.reset() -> None` — clear all counters; the interval is unchanged.
 - `sampler.every` — the configured interval.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
